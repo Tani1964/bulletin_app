@@ -31,7 +31,7 @@ export default function Page3() {
       <main className="flex-1 flex flex-col">
         {loading ? (
           <div className="flex-1 flex items-center justify-center">
-            <div className="animate-pulse w-full h-full bg-gray-200"></div>
+            <div className="animate-pulse w-full h-full bg-gray-200">Loading</div>
           </div>
         ) : bulletinImage ? (
           <div className="flex-1 relative">
