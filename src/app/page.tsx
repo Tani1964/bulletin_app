@@ -2,6 +2,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import Nav from './components/Nav'
 
 interface Bulletins {
   page1?: string
@@ -9,8 +10,42 @@ interface Bulletins {
   page3?: string
 }
 
+interface BulletinPage {
+  id: number
+  href: string
+  title: string
+  description: string
+  badge: string
+}
+
 export default function Home() {
   const [bulletins, setBulletins] = useState<Bulletins>({})
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Define bulletin pages data
+  const bulletinPages: BulletinPage[] = [
+    {
+      id: 1,
+      href: '/page1',
+      title: 'Page 1',
+      description: 'View the latest weekly announcements and service updates',
+      badge: 'Weekly Bulletin'
+    },
+    {
+      id: 2,
+      href: '/page2',
+      title: 'Page 2',
+      description: 'Check upcoming events, programs and community activities',
+      badge: 'Events & Programs'
+    },
+    {
+      id: 3,
+      href: '/page3',
+      title: 'Page 3',
+      description: 'Read prayer requests, testimonies and spiritual messages',
+      badge: 'Spiritual Life'
+    }
+  ]
 
   useEffect(() => {
     fetchBulletins()
@@ -18,103 +53,177 @@ export default function Home() {
 
   const fetchBulletins = async () => {
     try {
+      setIsLoading(true)
       const res = await fetch('/api/bulletins')
       const data = await res.json()
+      console.log(data)
       setBulletins(data)
     } catch (error) {
       console.error('Error fetching bulletins:', error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      <nav className="bg-white shadow-lg border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <div className="bg-blue-600 text-white p-2 rounded-lg mr-3">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                </svg>
-              </div>
-              <h1 className="text-2xl font-bold text-gray-900">Bulletin Board</h1>
-            </div>
-            <div className="flex items-center space-x-1">
-              <Link href="/page1" className="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200">
-                Page 1
-              </Link>
-              <Link href="/page2" className="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200">
-                Page 2
-              </Link>
-              <Link href="/page3" className="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200">
-                Page 3
-              </Link>
-              <Link href="/admin" className="btn-primary ml-4">
-                Admin Dashboard
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+  const getBulletinImage = (pageId: number) => {
+    const image = bulletins[`page${pageId}` as keyof Bulletins]
+    return image || null
+  }
 
-      <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Welcome to the Bulletin Board</h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Navigate to different pages to view the latest bulletin images and announcements.
+  const hasBulletins = Object.keys(bulletins).length > 0
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-indigo-50">
+      <Nav page={0} />
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto py-6 sm:py-8 lg:py-12 px-4 sm:px-6 lg:px-8">
+        {/* Hero Section */}
+        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
+            Welcome to Church
+          </h2>
+          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
+            Navigate to different pages to view the latest bulletin images and announcements for our church community.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[1, 2, 3].map((page) => (
-            <Link
-              key={page}
-              href={`/page${page}`}
-              className="group"
-            >
-              <div className="card p-6 h-full transform group-hover:scale-105 transition-transform duration-200">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-2xl font-bold text-gray-900">Page {page}</h3>
-                  <div className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-medium">
-                    Bulletin {page}
-                  </div>
-                </div>
-                
-                <p className="text-gray-600 mb-6">View the latest bulletin content for page {page}</p>
-                
-                {bulletins[`page${page}` as keyof Bulletins] ? (
-                  <div className="relative overflow-hidden rounded-lg">
-                    <Image
-                      src={bulletins[`page${page}` as keyof Bulletins]!}
-                      alt={`Page ${page} bulletin preview`}
-                      width={300}
-                      height={200}
-                      className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-blue-600 bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-200"></div>
-                  </div>
-                ) : (
-                  <div className="w-full h-48 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300">
-                    <div className="text-center">
-                      <svg className="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                      <p className="text-gray-500 text-sm">No image uploaded</p>
+        {/* Bulletin Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          {bulletinPages.map((bulletinPage) => {
+            const bulletinImage = getBulletinImage(bulletinPage.id)
+            
+            return (
+              <Link
+                key={bulletinPage.id}
+                href={bulletinPage.href}
+                className="group block"
+              >
+                <div className="bg-white rounded-xl shadow-lg hover:shadow-xl p-6 sm:p-8 h-full transform group-hover:scale-[1.02] transition-all duration-300 border border-gray-100">
+                  {/* Card Header */}
+                  <div className="flex items-center justify-between mb-4 sm:mb-6">
+                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900">
+                      {bulletinPage.title}
+                    </h3>
+                    <div className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap ml-2">
+                      {bulletinPage.badge}
                     </div>
                   </div>
-                )}
-                
-                <div className="mt-4 flex items-center text-blue-600 group-hover:text-blue-700">
-                  <span className="font-medium">View Full Bulletin</span>
-                  <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
+                  
+                  {/* Description */}
+                  <p className="text-gray-600 mb-6 sm:mb-8 text-sm sm:text-base leading-relaxed">
+                    {bulletinPage.description}
+                  </p>
+
+                  {/* Bulletin Image */}
+                  <div className="mb-6">
+                    {isLoading ? (
+                      <div className="w-full h-40 sm:h-48 lg:h-52 bg-gray-200 rounded-lg flex items-center justify-center animate-pulse">
+                        <div className="text-center">
+                          <div className="w-8 h-8 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
+                          <p className="text-gray-500 text-sm">Loading...</p>
+                        </div>
+                      </div>
+                    ) : bulletinImage ? (
+                      <div className="relative overflow-hidden rounded-lg shadow-md">
+                        <Image
+                          src={bulletinImage}
+                          alt={`${bulletinPage.title} bulletin preview`}
+                          width={400}
+                          height={300}
+                          className="w-full h-40 sm:h-48 lg:h-52 object-cover group-hover:scale-110 transition-transform duration-500"
+                          priority={bulletinPage.id === 1}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-gray-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          Click to view
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="w-full h-40 sm:h-48 lg:h-52 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300 group-hover:border-purple-300 transition-colors duration-200">
+                        <div className="text-center">
+                          <svg className="w-10 h-10 sm:w-12 sm:h-12 text-gray-400 mx-auto mb-2 group-hover:text-purple-400 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          <p className="text-gray-500 text-sm font-medium">No bulletin uploaded</p>
+                          <p className="text-gray-400 text-xs mt-1">Click to visit page</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Call to Action */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center text-purple-600 group-hover:text-purple-700 font-medium text-sm sm:text-base">
+                      <span>View Full Bulletin</span>
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                    
+                    {getBulletinImage(bulletinPage.id) && (
+                      <div className="flex items-center text-green-600 text-xs sm:text-sm">
+                        <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        <span className="font-medium">Available</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
+              </Link>
+            )
+          })}
+        </div>
+
+        {/* Additional Info Section */}
+        <div className="mt-12 sm:mt-16 lg:mt-20 text-center">
+          <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8 lg:p-10 max-w-4xl mx-auto border border-gray-100">
+            <div className="flex items-center justify-center mb-4 sm:mb-6">
+              <div className="bg-purple-100 p-3 rounded-full">
+                <svg className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
               </div>
-            </Link>
-          ))}
+            </div>
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">
+              Church Bulletin System
+            </h3>
+            <p className="text-gray-600 text-sm sm:text-base lg:text-lg leading-relaxed max-w-2xl mx-auto">
+              Access our weekly bulletins with service schedules, announcements, prayer requests, and community updates. 
+              Each page contains different sections of our church bulletin for easy navigation.
+            </p>
+          </div>
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white mt-16 sm:mt-20">
+        <div className="max-w-7xl mx-auto py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="flex items-center justify-center mb-4">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 mr-3 bg-purple-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm sm:text-base">N</span>
+              </div>
+              <h4 className="text-lg sm:text-xl font-bold">NBBCI</h4>
+            </div>
+            <p className="text-gray-400 text-sm sm:text-base mb-4">
+              New Bethel Baptist Church International
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-6 text-sm">
+              <span className="text-gray-300">© 2025 NBBCI. All rights reserved.</span>
+              <div className="flex space-x-4">
+                <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors duration-200">
+                  Privacy
+                </Link>
+                <Link href="/terms" className="text-gray-400 hover:text-white transition-colors duration-200">
+                  Terms
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }

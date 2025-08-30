@@ -136,7 +136,7 @@ export default function AdminDashboard() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="input-field"
+                  className="input-field w-full p-2 rounded-md"
                   placeholder="Enter your email"
                   required
                 />
@@ -148,7 +148,7 @@ export default function AdminDashboard() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="input-field"
+                  className="input-field w-full p-2 rounded-md"
                   placeholder="Enter your password"
                   required
                 />
@@ -156,7 +156,7 @@ export default function AdminDashboard() {
               
               <button
                 type="submit"
-                className="w-full btn-primary py-3 text-lg"
+                className="w-full btn-primary py-3 text-lg bg-purple-600 rounded-md"
               >
                 Sign In
               </button>

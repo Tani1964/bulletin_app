@@ -2,6 +2,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import Nav from '../components/Nav'
 
 export default function Page2() {
   const [bulletinImage, setBulletinImage] = useState<string | null>(null)
@@ -24,34 +25,8 @@ export default function Page2() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 flex flex-col">
-      <nav className="bg-white shadow-lg border-b border-gray-200 relative z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
-              <Link href="/" className="flex items-center text-gray-700 hover:text-green-600 transition-colors duration-200">
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Home
-              </Link>
-              <div className="h-6 w-px bg-gray-300"></div>
-              <h1 className="text-2xl font-bold text-gray-900">Page 2</h1>
-            </div>
-            <div className="flex items-center space-x-1">
-              <Link href="/page1" className="px-4 py-2 text-gray-700 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors duration-200">
-                Page 1
-              </Link>
-              <div className="bg-green-600 text-white px-3 py-1 rounded-full text-sm font-medium">
-                Current Page
-              </div>
-              <Link href="/page3" className="px-4 py-2 text-gray-700 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors duration-200">
-                Page 3
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+    <div className="min-h-screen bg-white flex flex-col">
+      <Nav page={2}/>
 
       <main className="flex-1 flex flex-col">
         {loading ? (
@@ -70,7 +45,7 @@ export default function Page2() {
             <div className="absolute bottom-4 left-4 bg-black bg-opacity-60 text-white px-3 py-2 rounded-lg text-sm">
               <div className="flex items-center space-x-4">
                 <span>Last updated: {new Date().toLocaleDateString()}</span>
-                <span className="bg-green-500 px-2 py-1 rounded-full text-xs">Active</span>
+                <span className="bg-purple-500 px-2 py-1 rounded-full text-xs">Active</span>
               </div>
             </div>
           </div>
