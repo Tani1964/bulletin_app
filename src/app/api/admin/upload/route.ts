@@ -44,7 +44,10 @@ export async function POST(request: NextRequest) {
       fs.mkdirSync(dataDir, { recursive: true })
     }
 
-    let bulletinsData: any = {}
+    interface BulletinsData {
+      [page: string]: string;
+    }
+    let bulletinsData: BulletinsData = {}
     if (fs.existsSync(dataPath)) {
       bulletinsData = JSON.parse(fs.readFileSync(dataPath, 'utf8'))
     }
@@ -56,6 +59,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ message: 'Upload successful', imagePath })
   } catch (error) {
+    console.error('Upload error:', error)
     return NextResponse.json({ error: 'Upload failed' }, { status: 500 })
   }
 }

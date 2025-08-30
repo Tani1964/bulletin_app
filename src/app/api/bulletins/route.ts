@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import path from 'path'
 
 export async function GET() {
@@ -13,6 +13,7 @@ export async function GET() {
       return NextResponse.json({})
     }
   } catch (error) {
+    console.error('Error reading bulletins:', error)
     return NextResponse.json({ error: 'Failed to read bulletins' }, { status: 500 })
   }
 }

@@ -12,6 +12,7 @@ export async function GET(request: NextRequest) {
     jwt.verify(token, process.env.JWT_SECRET!)
     return NextResponse.json({ message: 'Token valid' })
   } catch (error) {
+    console.error('Token verification failed:', error)  
     return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
   }
 }

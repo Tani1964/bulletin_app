@@ -18,10 +18,7 @@ export default function AdminDashboard() {
   const [message, setMessage] = useState('')
 
   useEffect(() => {
-    checkAuth()
-  }, [])
-
-  const checkAuth = async () => {
+      const checkAuth = async () => {
     try {
       const res = await fetch('/api/admin/verify', {
         credentials: 'include'
@@ -34,6 +31,10 @@ export default function AdminDashboard() {
       console.error('Auth check failed:', error)
     }
   }
+    checkAuth()
+  }, [])
+
+  
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -53,6 +54,7 @@ export default function AdminDashboard() {
         setMessage('Invalid credentials')
       }
     } catch (error) {
+      console.error('Login error:', error)
       setMessage('Login failed')
     }
   }
@@ -91,6 +93,7 @@ export default function AdminDashboard() {
         setMessage('Upload failed')
       }
     } catch (error) {
+      console.error('Upload error:', error)
       setMessage('Upload error')
     } finally {
       setUploading(false)
