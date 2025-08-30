@@ -12,7 +12,7 @@ const Nav = ({ page }: { page: number }) => {
     { href: "/page3", label: "Page 3", pageNum: 3 }
   ]
 
-  const getNavItemClass = (pageNum:Number) => {
+  const getNavItemClass = (pageNum:number) => {
     const baseClass = "px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap"
     
     if (page === pageNum) {
@@ -21,7 +21,7 @@ const Nav = ({ page }: { page: number }) => {
     return `${baseClass} text-gray-700 hover:text-purple-600 hover:bg-purple-50 hover:shadow-sm`
   }
 
-  const getMobileNavItemClass = (pageNum:Number) => {
+  const getMobileNavItemClass = (pageNum:number) => {
     const baseClass = "block w-full text-left px-4 py-3 text-base font-medium transition-all duration-200"
     
     if (page === pageNum) {
