@@ -2,6 +2,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import Footer from '../components/Footer'
 
 interface Bulletins {
   page1?: string
@@ -328,6 +329,7 @@ export default function AdminDashboard() {
           })}
         </div>
       </main>
+      <Footer/>
     </div>
   )
 }

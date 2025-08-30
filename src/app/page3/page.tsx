@@ -2,6 +2,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import Footer from '../components/Footer'
 import Nav from '../components/Nav'
 
 export default function Page3() {
@@ -60,6 +61,7 @@ export default function Page3() {
           </div>
         )}
       </main>
+      <Footer/>
     </div>
   )
 }
