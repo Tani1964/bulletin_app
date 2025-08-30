@@ -42,12 +42,12 @@ export default function Page3() {
               className="object-contain"
               priority
             />
-            <div className="absolute bottom-4 left-4 bg-black bg-opacity-60 text-white px-3 py-2 rounded-lg text-sm">
+            {/* <div className="absolute bottom-4 left-4 bg-black bg-opacity-60 text-white px-3 py-2 rounded-lg text-sm">
               <div className="flex items-center space-x-4">
                 <span>Last updated: {new Date().toLocaleDateString()}</span>
                 <span className="bg-green-500 px-2 py-1 rounded-full text-xs">Active</span>
               </div>
-            </div>
+            </div> */}
           </div>
         ) : (
           <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
