@@ -36,15 +36,15 @@ export default function Home() {
       id: 2,
       href: '/page2',
       title: 'Page 2',
-      description: 'Check upcoming events, programs and community activities',
-      badge: 'Events & Programs'
+      description: 'Read prayer requests, testimonies and spiritual messages',
+      badge: 'Spiritual Life'
     },
     {
       id: 3,
       href: '/page3',
       title: 'Page 3',
-      description: 'Read prayer requests, testimonies and spiritual messages',
-      badge: 'Spiritual Life'
+      description: 'Check upcoming events, programs and community activities',
+      badge: 'Events & Programs'
     }
   ]
 
